@@ -14,10 +14,12 @@ import {
 } from "@/components/ui/table"
 import { Button } from './ui/button'
 import {genderList} from '@/data/util'
+import { useRouter } from 'next/navigation'
 
 
 const ClientsList = () => {
   const [clients, setClients] = useState(null)
+  const router = useRouter()
   useEffect(() => {
     const getData = async () => {
       const { data: clients, error } = await supabase.from('clients').select('*')
@@ -71,7 +73,7 @@ const ClientsList = () => {
                     <TableCell className="text-right">{client.height} cm</TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
-                        <Button>View</Button>
+                        <Button onClick={() => router.push('/clients/' + client.id)}>View</Button>
                         <Button variant='destructive'>Delete</Button>
                       </div>
                     </TableCell>
