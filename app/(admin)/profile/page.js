@@ -23,16 +23,16 @@ import { Textarea } from "@/components/ui/textarea"
 const Profile = () => {
   return (
     <div className='mx-auto max-w-2xl'>
-      <div>
+      {/* <div>
         <h3 className="text-lg font-medium">Profile</h3>
         <p className="text-sm text-muted-foreground">
           This is how others will see you on the site.
         </p>
-      </div>
-      <Form>
+      </div> */}
+      {/* <Form>
         <form className="space-y-8">
           <FormField
-            control={form.control}
+            // control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
@@ -49,7 +49,7 @@ const Profile = () => {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
@@ -75,7 +75,7 @@ const Profile = () => {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name="bio"
             render={({ field }) => (
               <FormItem>
@@ -95,41 +95,9 @@ const Profile = () => {
               </FormItem>
             )}
           />
-          <div>
-            {fields.map((field, index) => (
-              <FormField
-                control={form.control}
-                key={field.id}
-                name={`urls.${index}.value`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={cn(index !== 0 && "sr-only")}>
-                      URLs
-                    </FormLabel>
-                    <FormDescription className={cn(index !== 0 && "sr-only")}>
-                      Add links to your website, blog, or social media profiles.
-                    </FormDescription>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="mt-2"
-              onClick={() => append({ value: "" })}
-            >
-              Add URL
-            </Button>
-          </div>
           <Button type="submit">Update profile</Button>
         </form>
-      </Form>
+      </Form> */}
     </div>
   )
 }
