@@ -23,7 +23,7 @@ const Clients = ({params}) => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data: client, error } = await supabase.from('clients').select('*, weight-data(*), meal-plans(*)').eq('id', params.clientId).single()
+      const { data: client, error } = await supabase.from('clients').select('*, weight-data(*), meal-plans(*), workout-plans(*)').eq('id', params.clientId).single()
       console.log(client);
       setClient(client)
     }
@@ -89,7 +89,7 @@ const Clients = ({params}) => {
             </CardHeader>
             <CardContent>
             <Table>
-              <TableCaption>A list of your Workout Plans.</TableCaption>
+              <TableCaption>A list of your Meal Plans.</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead>Plan Name</TableHead>
@@ -104,6 +104,37 @@ const Clients = ({params}) => {
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
                         <Button onClick={() => router.push('/meal-plans/' + mealPlan.id)}>View</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+                
+              </TableBody>
+            </Table>
+            </CardContent>
+          </Card>
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>Assigned Workout Plan</CardTitle>
+            </CardHeader>
+            <CardContent>
+            <Table>
+              <TableCaption>A list of your Workout Plans.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Plan Name</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+              {client['workout-plans']?.map(workoutPlan => {
+                return (
+                  <TableRow key={workoutPlan.id}>
+                    <TableCell>{workoutPlan.name}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex gap-4 justify-end">
+                        <Button onClick={() => router.push('/workout-plans/' + workoutPlan.id)}>View</Button>
                       </div>
                     </TableCell>
                   </TableRow>
