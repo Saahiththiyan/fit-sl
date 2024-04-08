@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 const MealPlanList = ({getData, mealPlans}) => {
   const router = useRouter()
@@ -38,6 +39,7 @@ const MealPlanList = ({getData, mealPlans}) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Plan Name</TableHead>
+                  <TableHead>Client</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -46,6 +48,15 @@ const MealPlanList = ({getData, mealPlans}) => {
                 return (
                   <TableRow key={mealPlan.id}>
                     <TableCell>{mealPlan.name}</TableCell>
+                    <TableCell>
+                      <div className='flex just items-center gap-4'>
+                        <Avatar className="h-9 w-9">
+                          <AvatarImage src={mealPlan.clients.avatar_url} alt="Avatar" />
+                          <AvatarFallback>OM</AvatarFallback>
+                        </Avatar>
+                        {mealPlan.clients.first_name} {mealPlan.clients.last_name}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
                         <Button onClick={() => router.push('/meal-plans/' + mealPlan.id)}>View</Button>

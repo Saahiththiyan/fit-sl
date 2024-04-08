@@ -4,13 +4,26 @@ import React, { useEffect, useState } from 'react'
 import {supabase} from '@/lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { genderList } from '@/data/util'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Button } from '@/components/ui/button'
 import WeightGraph from '@/components/weight-graph'
+import { useRouter } from 'next/navigation'
 
 const Clients = ({params}) => {
-const [client, setClient] = useState(null)
+  const [client, setClient] = useState(null)
+  const router = useRouter()
+
   useEffect(() => {
     const getData = async () => {
-      const { data: client, error } = await supabase.from('clients').select('*, weight-data(*)').eq('id', params.clientId).single()
+      const { data: client, error } = await supabase.from('clients').select('*, weight-data(*), meal-plans(*)').eq('id', params.clientId).single()
       console.log(client);
       setClient(client)
     }
@@ -68,6 +81,37 @@ const [client, setClient] = useState(null)
                 <WeightGraph data={client['weight-data']}/>
               </div>
 
+            </CardContent>
+          </Card>
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>Assigned Meal Plans</CardTitle>
+            </CardHeader>
+            <CardContent>
+            <Table>
+              <TableCaption>A list of your Workout Plans.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Plan Name</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+              {client['meal-plans']?.map(mealPlan => {
+                return (
+                  <TableRow key={mealPlan.id}>
+                    <TableCell>{mealPlan.name}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex gap-4 justify-end">
+                        <Button onClick={() => router.push('/meal-plans/' + mealPlan.id)}>View</Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+                
+              </TableBody>
+            </Table>
             </CardContent>
           </Card>
           </>

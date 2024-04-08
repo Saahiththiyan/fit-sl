@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 const MealPlans = () => {
   const [mealPlans, setMealPlans] = useState(null)
   const getData = async () => {
-    const { data: mealPlans, error } = await supabase.from('meal-plans').select('*')
+    const { data: mealPlans, error } = await supabase.from('meal-plans').select('*, clients(*)')
     setMealPlans(mealPlans)
   }
   return (
