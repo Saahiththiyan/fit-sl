@@ -41,6 +41,9 @@ const Clients = ({params}) => {
             <CardContent>
               <div className='flex'>
                 <div className="flex-1 space-y-4">
+                  <img src={client.avatar_url} alt="" height={150} width={150}/>
+                </div>
+                <div className="flex-1 space-y-4">
                   <div>Client name: <b>{client.first_name} {client.last_name}</b></div>
                   <div>Gender: <b>{genderList[client.gender]}</b></div>
                   <div>Starting weight: <b>{client.current_weight} kg</b></div>
@@ -50,6 +53,7 @@ const Clients = ({params}) => {
                   <div>Height: <b>{client.height} cm</b></div>
                   <div>Email: <b>{client.email}</b></div>
                 </div>
+                
 
               </div>
 
@@ -83,68 +87,72 @@ const Clients = ({params}) => {
 
             </CardContent>
           </Card>
-          <Card className="col-span-3">
-            <CardHeader>
-              <CardTitle>Assigned Meal Plans</CardTitle>
-            </CardHeader>
-            <CardContent>
-            <Table>
-              <TableCaption>A list of your Meal Plans.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Plan Name</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-              {client['meal-plans']?.map(mealPlan => {
-                return (
-                  <TableRow key={mealPlan.id}>
-                    <TableCell>{mealPlan.name}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex gap-4 justify-end">
-                        <Button onClick={() => router.push('/meal-plans/' + mealPlan.id)}>View</Button>
-                      </div>
-                    </TableCell>
+          <div className='flex gap-8'>
+            <Card className="col-span-3 flex-1">
+              <CardHeader>
+                <CardTitle>Assigned Meal Plans</CardTitle>
+              </CardHeader>
+              <CardContent>
+              <Table>
+                <TableCaption>A list of {client.first_name}'s Meal Plans.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Plan Name</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                )
-              })}
-                
-              </TableBody>
-            </Table>
-            </CardContent>
-          </Card>
-          <Card className="col-span-3">
-            <CardHeader>
-              <CardTitle>Assigned Workout Plan</CardTitle>
-            </CardHeader>
-            <CardContent>
-            <Table>
-              <TableCaption>A list of your Workout Plans.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Plan Name</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-              {client['workout-plans']?.map(workoutPlan => {
-                return (
-                  <TableRow key={workoutPlan.id}>
-                    <TableCell>{workoutPlan.name}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex gap-4 justify-end">
-                        <Button onClick={() => router.push('/workout-plans/' + workoutPlan.id)}>View</Button>
-                      </div>
-                    </TableCell>
+                </TableHeader>
+                <TableBody>
+                {client['meal-plans']?.map(mealPlan => {
+                  return (
+                    <TableRow key={mealPlan.id}>
+                      <TableCell>{mealPlan.name}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex gap-4 justify-end">
+                          <Button onClick={() => router.push('/meal-plans/' + mealPlan.id)}>View</Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+                  
+                </TableBody>
+              </Table>
+              </CardContent>
+            </Card>
+            <Card className="col-span-3 flex-1">
+              <CardHeader>
+                <CardTitle>Assigned Workout Plan</CardTitle>
+              </CardHeader>
+              <CardContent>
+              <Table>
+                <TableCaption>A list of {client.first_name}'s Workout Plans.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Plan Name</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                )
-              })}
-                
-              </TableBody>
-            </Table>
-            </CardContent>
-          </Card>
+                </TableHeader>
+                <TableBody>
+                {client['workout-plans']?.map(workoutPlan => {
+                  return (
+                    <TableRow key={workoutPlan.id}>
+                      <TableCell>{workoutPlan.name}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex gap-4 justify-end">
+                          <Button onClick={() => router.push('/workout-plans/' + workoutPlan.id)}>View</Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+                  
+                </TableBody>
+              </Table>
+              </CardContent>
+            </Card>
+          </div>
+          
+          
           </>
           
         )}
