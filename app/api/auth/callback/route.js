@@ -18,5 +18,5 @@ export async function GET (req) {
     await supabase.auth.exchangeCodeForSession(code)
   }
   // Redirect the user to the base URL after authentication
-  return NextResponse.redirect(new URL('/dashboard', req.url))
+  return NextResponse.redirect(new URL('/clients', req.url))
 }

@@ -13,6 +13,7 @@ import {
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 
 
@@ -41,6 +42,7 @@ const WorkoutPlanList = ({getData, workoutPlans}) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Plan Name</TableHead>
+                  <TableHead>Client</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -49,6 +51,15 @@ const WorkoutPlanList = ({getData, workoutPlans}) => {
                 return (
                   <TableRow key={workoutPlan.id}>
                     <TableCell>{workoutPlan.name}</TableCell>
+                    <TableCell>
+                      <div className='flex just items-center gap-4'>
+                        <Avatar className="h-9 w-9">
+                          <AvatarImage src={workoutPlan.clients.avatar_url} alt="Avatar" />
+                          <AvatarFallback>OM</AvatarFallback>
+                        </Avatar>
+                        {workoutPlan.clients.first_name} {workoutPlan.clients.last_name}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
                         <Button onClick={() => router.push('/workout-plans/' + workoutPlan.id)}>View</Button>

@@ -7,7 +7,7 @@ import {supabase} from '@/lib/supabase'
 const WorkoutPlans = () => {
   const [workoutPlans, setWorkoutPlans] = useState(null)
   const getData = async () => {
-    const { data: workoutPlans, error } = await supabase.from('workout-plans').select('*')
+    const { data: workoutPlans, error } = await supabase.from('workout-plans').select('*, clients(*)')
     setWorkoutPlans(workoutPlans)
   }
   return (

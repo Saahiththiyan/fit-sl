@@ -23,7 +23,7 @@ export function UserAuthForm ({ className, ...props }) {
       })
       setIsLoading(true)
       if (dataUser) {
-        router.push('/dashboard')
+        router.push('/clients')
       }
       if (error) {
         console.log(error)
