@@ -13,17 +13,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Description } from '@radix-ui/react-dialog'
+import { Textarea } from './ui/textarea'
 
 const MealPlanDialog = ({getData}) => {
   const [name, setName] = useState('')
   const [clientId, setClientId] = useState('')
   const [clients, setClients] = useState([])
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState(null)
+  const [description, setDescription] = useState(null)
+
+  const handleImageUpload = async (file) => {
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${Date.now()}.${fileExt}`
+    const filePath = `meal-plans/${fileName}`
+
+    let { error: uploadError } = await supabase.storage
+      .from('fitsl')
+      .upload(filePath, file)
+
+    if (uploadError) {
+      throw uploadError
+    }
+
+    const { data } = supabase.storage
+      .from('fitsl')
+      .getPublicUrl(filePath)
+
+    console.log(data.publicUrl);
+
+    return data.publicUrl
+  }
+
   const insertWorkoutPlan = async () => {
+    let imageUrl = null
+    if (image) {
+      try {
+        imageUrl = await handleImageUpload(image)
+      } catch (error) {
+        console.error('Error uploading image:', error)
+        return
+      }
+    }
+
     const { data, error } = await supabase
     .from('meal-plans')
     .insert([
-      { name: name, client_id: clientId }
+      { name: name, client_id: clientId, image_url: imageUrl, description }
     ])
     .select()
     getData()
@@ -77,6 +114,14 @@ const MealPlanDialog = ({getData}) => {
                 })}
               </SelectContent>
             </Select>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">Description</Label>
+              <Textarea id="description" className="col-span-3" value={description} onChange={(e) => setDescription(e.target.value)} />
+            </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right">Image</Label>
+            <Input type="file" id="image" className="col-span-3" onChange={(e) => setImage(e.target.files[0])} />
           </div>
         </div>
         <DialogFooter>

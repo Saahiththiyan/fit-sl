@@ -21,17 +21,27 @@ const ClientDialog = () => {
   const [email, setEmail] = useState('')
   const router = useRouter()
   const insertClient = async () => {
-    const { data, error } = await supabase
+    const password = `${firstname}1234`
+    const { data: clientData, error: clientError } = await supabase
     .from('clients')
     .insert([
       { first_name: firstname, last_name: lastname, email: email },
     ])
     .select()
+    const { data: userData, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password
+    })
+    console.log(userData);
+    const { data: dataProfile, error: errorProfile } = await supabase
+    .from('profiles')
+    .update({ username: firstname, full_name: `${firstname} ${lastname}`, client_id: clientData[0].id }) // replace with actual fields to update
+    .eq('id', userData.user.id);
     router.refresh()
   }
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Add</Button>
       </DialogTrigger>
       <DialogContent>
