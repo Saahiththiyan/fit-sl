@@ -33,7 +33,7 @@ const WorkoutDialog = ({getData, workoutPlanId}) => {
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button onClick={() => setOpen(true)}>Add</Button>
       </DialogTrigger>
       <DialogContent>

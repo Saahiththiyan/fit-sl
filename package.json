@@ -25,9 +25,12 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
+    "react-image-lightbox": "^5.1.4",
     "recharts": "^2.12.4",
+    "simple-react-lightbox": "^3.6.9-0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "yet-another-react-lightbox": "^3.21.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

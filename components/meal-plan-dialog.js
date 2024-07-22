@@ -77,7 +77,7 @@ const MealPlanDialog = ({getData}) => {
   }, [])
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button onClick={() => setOpen(true)}>Add</Button>
       </DialogTrigger>
       <DialogContent>

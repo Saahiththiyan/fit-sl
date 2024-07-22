@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Input } from '@/components/ui/input'
 
 const Chat = () => {
   const [users, setUsers] = useState([])
@@ -70,64 +71,43 @@ const Chat = () => {
   }
 
   return (
-    <main className='flex h-[calc(100vh-64px)]'>
-      <div className='w-1/4 p-4 h-full overflow-y-auto'>
-        <Card className="h-full flex flex-col">
-          <CardHeader>
-            <CardTitle>Users</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-y-auto">
-            <div>
-              {users.map(user => (
-                <div key={user.id}>
-                  <div onClick={() => setSelectedUser(user)} className={`flex gap-2 mb-2 rounded-lg p-2 border-solid border border-green-200 items-center ${user.id === selectedUser?.id && 'bg-green-200'}`}>
-                    <Avatar className='h-8 w-8'>
-                      <AvatarImage src={user?.avatar_url} alt={user?.username} />
-                      <AvatarFallback>{user?.full_name}</AvatarFallback>
-                    </Avatar>
-                    <div>{user.first_name} {user.last_name}</div>
-                  </div>
-                </div>
-              ))}
+    <div className="flex h-[calc(100vh-64px)] w-screen">
+      {/* User list */}
+      <div className="w-1/5 p-2 border-r border-gray-300">
+        {users.map((user, index) => (
+          <div onClick={() => setSelectedUser(user)} key={index} className="flex items-center p-2 cursor-pointer hover:bg-gray-200">
+            <Avatar name={user} className="mr-3">
+              <AvatarImage src={user.avatar_url} alt="@shadcn" />
+              <AvatarFallback>{user.first_name}</AvatarFallback> 
+            </Avatar>
+            <span className="font-bold">{user.first_name} {user.last_name}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Chat interface */}
+      <div className="flex flex-col w-4/5 p-4">
+        {/* Messages */}
+        <div className="flex flex-col flex-1 overflow-y-auto space-y-4">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`max-w-3/4 p-3 rounded-md ${
+                message.sender_id === user?.id ? 'self-end bg-green-100' : 'self-start bg-gray-200'
+              }`}
+            >
+              <span>{message.content}</span>
             </div>
-          </CardContent>
-        </Card>
+          ))}
+        </div>
+
+        {/* Input field */}
+        <div className="flex p-3 border-t border-gray-300">
+          <Input placeholder="Type your message..." className="flex-1 mr-3" value={newMessage} onChange={e => setNewMessage(e.target.value)}/>
+          <Button onClick={sendMessage} className="flex-shrink-0">Send</Button>
+        </div>
       </div>
-      <div className='w-3/4 p-4 h-full overflow-y-auto'>
-        {selectedUser ? (
-          <Card className="h-full flex flex-col">
-            <CardHeader>
-              <CardTitle>Chat with {selectedUser.first_name} {selectedUser.last_name}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col overflow-hidden">
-              <div className='flex-1 overflow-y-auto'>
-                {messages.map(msg => (
-                  <div key={msg.id} className={`mb-4 ${msg.sender_id === user?.id ? 'text-right' : ''}`}>
-                    <p className={`inline-block ${msg.sender_id === user?.id ? 'bg-green-200' : 'bg-slate-100'} p-2 rounded-md`}>{msg.content}</p>
-                  </div>
-                ))}
-              </div>
-              <div className='mt-4 flex gap-2'>
-                <input
-                  type='text'
-                  value={newMessage}
-                  onChange={e => setNewMessage(e.target.value)}
-                  placeholder='Type a message'
-                  className='flex-grow p-2 border border-gray-300 rounded-md'
-                />
-                <Button onClick={sendMessage} className='rounded-r-md'>Send</Button>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="h-full flex flex-col">
-            <CardHeader>
-              <CardTitle>Select a user to chat with</CardTitle>
-            </CardHeader>
-          </Card>
-        )}
-      </div>
-    </main>
+    </div>
   )
 }
 
