@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { FaPlus } from 'react-icons/fa'
 
 const ClientDialog = () => {
   const [firstname, setFirstname] = useState('')
@@ -42,7 +43,7 @@ const ClientDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add</Button>
+        <Button><FaPlus className="mr-2" />Add</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -117,7 +118,7 @@ const ClientDialog = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={insertClient}>Add</Button>
+          <Button type="submit" onClick={insertClient}><FaPlus className="mr-2" />Add</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

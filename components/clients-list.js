@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import {supabase} from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   Table,
@@ -13,13 +13,15 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from './ui/button'
-import {genderList} from '@/data/util'
+import { genderList } from '@/data/util'
 import { useRouter } from 'next/navigation'
-
+import { FaSpinner, FaEye, FaTrash } from 'react-icons/fa'
 
 const ClientsList = () => {
   const [clients, setClients] = useState(null)
+  const [loading, setLoading] = useState(null)
   const router = useRouter()
+
   useEffect(() => {
     const getData = async () => {
       const { data: clients, error } = await supabase.from('clients').select('*')
@@ -27,7 +29,22 @@ const ClientsList = () => {
     }
     getData()
   }, [])
-  
+
+  const deleteClient = async (clientId) => {
+    setLoading(clientId)
+    const { error } = await supabase
+      .from('clients')
+      .delete()
+      .eq('id', clientId)
+
+    if (!error) {
+      setClients(clients.filter(client => client.id !== clientId))
+    } else {
+      console.error("Error deleting client:", error)
+    }
+    setLoading(null)
+  }
+
   return (
     <>
       <Card className="col-span-3">
@@ -55,9 +72,8 @@ const ClientsList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {clients?.map(client => {
-                return (
-                  <TableRow>
+                {clients?.map(client => (
+                  <TableRow key={client.id}>
                     <TableCell className="font-medium">
                       <Avatar className="h-9 w-9">
                         <AvatarImage src={client.avatar_url} alt="Avatar" />
@@ -73,21 +89,27 @@ const ClientsList = () => {
                     <TableCell className="text-right">{client.height} cm</TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
-                        <Button onClick={() => router.push('/clients/' + client.id)}>View</Button>
-                        <Button variant='destructive'>Delete</Button>
+                        <Button onClick={() => router.push('/clients/' + client.id)}>
+                          <FaEye className="mr-2" />
+                          View
+                        </Button>
+                        <Button 
+                          variant='destructive' 
+                          onClick={() => deleteClient(client.id)}
+                          disabled={loading === client.id}
+                        >
+                          {loading === client.id ? <FaSpinner className="animate-spin" /> : <FaTrash className="mr-2" />}
+                          {loading === client.id ? '' : 'Delete'}
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                )
-              })}
-                
+                ))}
               </TableBody>
             </Table>
-            
           </div>
         </CardContent>
       </Card>
-      
     </>
   )
 }

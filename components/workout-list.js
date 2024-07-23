@@ -12,20 +12,24 @@ import {
 } from "@/components/ui/table"
 import { Button } from './ui/button'
 import { supabase } from '@/lib/supabase'
+import { FaSpinner, FaTrash, FaEye } from 'react-icons/fa'
 
+const WorkoutList = ({ getData, workouts }) => {
+  const [loading, setLoading] = useState(null)
 
-const WorkoutList = ({getData, workouts}) => {
-  
   useEffect(() => {
-    
     getData()
   }, [])
 
   const deleteWorkout = async (id) => {
-    const { data: workouts, error } = await supabase.from('workouts').delete().eq('id', id)
-    getData()
+    setLoading(id)
+    const { error } = await supabase.from('workouts').delete().eq('id', id)
+    if (!error) {
+      getData()
+    }
+    setLoading(null)
   }
-  
+
   return (
     <>
       <Card className="col-span-3">
@@ -33,7 +37,7 @@ const WorkoutList = ({getData, workouts}) => {
           <CardTitle>Workouts</CardTitle>
         </CardHeader>
         <CardContent>
-        <div className="space-y-8">
+          <div className="space-y-8">
             <Table>
               <TableCaption>A list of your Workouts.</TableCaption>
               <TableHeader>
@@ -46,29 +50,31 @@ const WorkoutList = ({getData, workouts}) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {workouts?.map(workout => {
-                return (
+                {workouts?.map(workout => (
                   <TableRow key={workout.id}>
                     <TableCell>{workout.name}</TableCell>
                     <TableCell>{workout.sets}</TableCell>
                     <TableCell>{workout.reps}</TableCell>
-                    <TableCell>{workout.duration}</TableCell>
+                    <TableCell>{workout.duration && `${workout.duration} min`}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
-                        <Button onClick={() => deleteWorkout(workout.id)} variant='destructive'>Delete</Button>
+                        <Button
+                          onClick={() => deleteWorkout(workout.id)}
+                          variant='destructive'
+                          disabled={loading === workout.id}
+                        >
+                          {loading === workout.id ? <FaSpinner className="animate-spin" /> : <FaTrash className="mr-2" />}
+                          {loading === workout.id ? '' : 'Delete'}
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                )
-              })}
-                
+                ))}
               </TableBody>
             </Table>
-            
           </div>
         </CardContent>
       </Card>
-      
     </>
   )
 }

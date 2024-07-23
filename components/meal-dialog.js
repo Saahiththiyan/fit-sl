@@ -6,6 +6,7 @@ import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { supabase } from '@/lib/supabase'
 import { Textarea } from './ui/textarea'
+import { FaPlus } from 'react-icons/fa'
 
 const MealDialog = ({getData, mealPlanId}) => {
   const [name, setName] = useState('')
@@ -74,7 +75,7 @@ const MealDialog = ({getData, mealPlanId}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Add</Button>
+        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add</Button>
       </DialogTrigger>
       <DialogContent style={{ width: '80vw', maxWidth: '1200px', height: '80vh', maxHeight: '800px' }}>
         <DialogHeader>

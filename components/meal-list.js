@@ -13,20 +13,24 @@ import {
 import { Button } from './ui/button'
 import { supabase } from '@/lib/supabase'
 import { mealTypes } from '@/data/util'
+import { FaSpinner, FaTrash, FaEye } from 'react-icons/fa'
 
+const MealList = ({ getData, meals }) => {
+  const [loading, setLoading] = useState(null)
 
-const MealList = ({getData, meals}) => {
-  
   useEffect(() => {
-    
     getData()
   }, [])
 
   const deleteMeal = async (id) => {
-    const { data: meals, error } = await supabase.from('meals').delete().eq('id', id)
-    getData()
+    setLoading(id)
+    const { error } = await supabase.from('meals').delete().eq('id', id)
+    if (!error) {
+      getData()
+    }
+    setLoading(null)
   }
-  
+
   return (
     <>
       <Card className="col-span-3">
@@ -34,7 +38,7 @@ const MealList = ({getData, meals}) => {
           <CardTitle>Meals</CardTitle>
         </CardHeader>
         <CardContent>
-        <div className="space-y-8">
+          <div className="space-y-8">
             <Table>
               <TableCaption>A list of meals.</TableCaption>
               <TableHeader>
@@ -46,28 +50,30 @@ const MealList = ({getData, meals}) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-              {meals?.map(meal => {
-                return (
+                {meals?.map(meal => (
                   <TableRow key={meal.id}>
                     <TableCell>{meal.name}</TableCell>
-                    <TableCell>{mealTypes.find(mealtype => mealtype.id == meal.type)?.name}</TableCell>
+                    <TableCell>{mealTypes.find(mealtype => mealtype.id === meal.type)?.name}</TableCell>
                     <TableCell>{meal.weight}g</TableCell>
                     <TableCell className="text-right">
                       <div className="flex gap-4 justify-end">
-                        <Button onClick={() => deleteMeal(meal.id)} variant='destructive'>Delete</Button>
+                        <Button
+                          onClick={() => deleteMeal(meal.id)}
+                          variant='destructive'
+                          disabled={loading === meal.id}
+                        >
+                          {loading === meal.id ? <FaSpinner className="animate-spin" /> : <FaTrash className="mr-2" />}
+                          {loading === meal.id ? '' : 'Delete'}
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                )
-              })}
-                
+                ))}
               </TableBody>
             </Table>
-            
           </div>
         </CardContent>
       </Card>
-      
     </>
   )
 }

@@ -12,6 +12,7 @@ import { Button } from './ui/button'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { supabase } from '@/lib/supabase'
+import { FaPlus } from 'react-icons/fa'
 
 const WorkoutplanDialog = ({getData}) => {
   const [name, setName] = useState('')
@@ -41,7 +42,7 @@ const WorkoutplanDialog = ({getData}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Add</Button>
+        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

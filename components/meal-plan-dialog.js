@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { Description } from '@radix-ui/react-dialog'
 import { Textarea } from './ui/textarea'
+import { FaPlus } from 'react-icons/fa'
 
 const MealPlanDialog = ({getData}) => {
   const [name, setName] = useState('')
@@ -78,7 +79,7 @@ const MealPlanDialog = ({getData}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Add</Button>
+        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
