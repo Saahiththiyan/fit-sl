@@ -43,7 +43,7 @@ const ClientDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button><FaPlus className="mr-2" />Add</Button>
+        <Button><FaPlus className="mr-2" />Create a new client</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

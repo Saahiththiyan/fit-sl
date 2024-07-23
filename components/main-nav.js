@@ -10,10 +10,10 @@ const MainNav = ({ className, ...props }) => {
       {...props}
     >
       <Link
-        href='/dashboard'
+        href='/clients'
         className='text-sm font-medium transition-colors hover:text-primary'
       >
-        Dashboard
+        FitSL
       </Link>
       <Link
         href='/clients'

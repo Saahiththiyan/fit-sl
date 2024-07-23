@@ -35,7 +35,7 @@ const WorkoutDialog = ({getData, workoutPlanId}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add</Button>
+        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add new workout</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

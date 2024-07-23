@@ -79,7 +79,7 @@ const MealPlanDialog = ({getData}) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Add</Button>
+        <Button onClick={() => setOpen(true)}><FaPlus className="mr-2" />Create a new meal plan</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

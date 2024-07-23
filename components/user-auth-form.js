@@ -1,35 +1,36 @@
 import React, { useState } from 'react'
-
 import { cn } from '@/lib/utils'
-// import { Icons } from "@/components/icons"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { FaSpinner } from 'react-icons/fa'
 
-export function UserAuthForm ({ className, ...props }) {
+export function UserAuthForm({ className, ...props }) {
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const router = useRouter()
 
-  async function onSubmit (event) {
+  async function onSubmit(event) {
     event.preventDefault()
+    setIsLoading(true)
+    setError('')
     try {
       const { data: dataUser, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
-      setIsLoading(true)
       if (dataUser) {
         router.push('/clients')
       }
       if (error) {
-        console.log(error)
+        setError(error.message)
       }
     } catch (error) {
-      console.log(error)
+      setError('An unexpected error occurred. Please try again.')
     }
     setIsLoading(false)
   }
@@ -55,7 +56,7 @@ export function UserAuthForm ({ className, ...props }) {
             />
           </div>
           <div className='grid gap-2'>
-            <Label htmlFor='email'>
+            <Label htmlFor='password'>
               Password
             </Label>
             <Input
@@ -70,10 +71,11 @@ export function UserAuthForm ({ className, ...props }) {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          <Button disabled={isLoading}>
-            {/* {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )} */}
+          {error && <p className='text-red-600'>{error}</p>}
+          <Button type='submit' disabled={isLoading}>
+            {isLoading && (
+              <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
             Log In with Email
           </Button>
         </div>
