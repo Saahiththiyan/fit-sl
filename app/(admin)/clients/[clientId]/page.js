@@ -63,6 +63,8 @@ const Clients = ({params}) => {
                 <div className="flex-1 space-y-4">
                   <div>Height: <b>{client.height} cm</b></div>
                   <div>Email: <b>{client.email}</b></div>
+                  <div>Health issues: <b>{client.health_issues}</b></div>
+                  <div>Dietary restrictions: <b>{client.ristrictions}</b></div>
                 </div>
               </div>
             </CardContent>
